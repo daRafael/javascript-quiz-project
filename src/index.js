@@ -104,7 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
     
-    progressBar.style.width = `${(quiz.questions.length - quiz.currentQuestionIndex) / quiz.currentQuestionIndex * 100}` ; // This value is hardcoded as a placeholder
+    progressBar.style.width = `${((quiz.currentQuestionIndex + 1) / quiz.questions.length) * 100}%` ; // This value is hardcoded as a placeholder
+    console.log(progressBar.style.width)
 
 
 
@@ -161,7 +162,26 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
     // YOUR CODE HERE:
-    const choices = document.querySelectorAll('input[name=choice]');
+    const choices = choiceContainer.querySelectorAll('input[name=choice]');
+
+    choices.forEach((choice) => {
+      if(choice.checked) {
+        selectedAnswer = choice.value;
+      }
+    });
+
+    if (selectedAnswer) {
+      const question = quiz.getQuestion();
+      if(selectedAnswer !== question.answer) {
+        console.log('wrong answer');
+        return;
+      }
+      quiz.checkAnswer(selectedAnswer);
+      quiz.moveToNextQuestion();
+      showQuestion();
+    }
+
+    
 
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
@@ -193,7 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
     endView.style.display = "flex";
     
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
+    resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.questions.length} correct answers!`; // This value is hardcoded as a placeholder
   }
   
 });
