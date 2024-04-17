@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   timeRemainingContainer.innerText = `${minutes}:${seconds}`;
 
   // Show first question
-  showQuestion();
+  showQuestion()
 
 
   /************  TIMER  ************/
@@ -98,23 +98,46 @@ document.addEventListener("DOMContentLoaded", () => {
     //
     // 1. Show the question
     // Update the inner text of the question container element and show the question text
+    questionContainer.innerHTML = `${question.text}`;
 
     
     // 2. Update the green progress bar
     // Update the green progress bar (div#progressBar) width so that it shows the percentage of questions answered
     
-    progressBar.style.width = `65%`; // This value is hardcoded as a placeholder
+    progressBar.style.width = `${(quiz.questions.length - quiz.currentQuestionIndex) / quiz.currentQuestionIndex * 100}` ; // This value is hardcoded as a placeholder
 
 
 
     // 3. Update the question count text 
     // Update the question count (div#questionCount) show the current question out of total questions
     
-    questionCount.innerText = `Question 1 of 10`; //  This value is hardcoded as a placeholder
+    questionCount.innerText = `Question ${quiz.currentQuestionIndex + 1} of ${quiz.questions.length}`; //  This value is hardcoded as a placeholder
 
 
     
     // 4. Create and display new radio input element with a label for each choice.
+
+
+    question.choices.forEach((choice) => {
+      const inputRadio = document.createElement('input');
+      inputRadio.type = 'radio';
+      inputRadio.name = 'choice';
+      inputRadio.value = choice;
+      choiceContainer.appendChild(inputRadio);
+
+      const label = document.createElement('label');
+      label.innerText = choice;
+      choiceContainer.appendChild(label);
+
+      const br = document.createElement('br');
+      choiceContainer.appendChild(br);
+
+
+    });
+
+
+
+
     // Loop through the current question `choices`.
       // For each choice create a new radio input with a label, and append it to the choice container.
       // Each choice should be displayed as a radio input element with a label:
@@ -135,9 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function nextButtonHandler () {
     let selectedAnswer; // A variable to store the selected answer value
 
-
+    
 
     // YOUR CODE HERE:
+    const choices = document.querySelectorAll('input[name=choice]');
+
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
 
