@@ -173,7 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (selectedAnswer) {
       const question = quiz.getQuestion();
       if(selectedAnswer !== question.answer) {
-        console.log('wrong answer');
+        quiz.moveToNextQuestion();
+        showQuestion();
         return;
       }
       quiz.checkAnswer(selectedAnswer);
